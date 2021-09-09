@@ -1,0 +1,5 @@
+# Distributions
+```@docs
+TDist
+ScaledInverseChiSq 
+```

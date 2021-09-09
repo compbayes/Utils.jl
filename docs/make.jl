@@ -10,6 +10,7 @@ makedocs(
     pages = Any[
         "Home" => "index.md",
         "Data/array manipulation" => "ArrayManip.md",
+        "Distributions" => "Distr.md",
         "Misc" => "Misc.md"    
     ]
 )

@@ -3,6 +3,8 @@ module Utils
 # Python functions import
 using PyCall, LinearAlgebra
 
+include("Distr.jl") # some extra distributions
+
 # Importing the pickle functionality from Python using PyCall
 py"""
 import pickle
