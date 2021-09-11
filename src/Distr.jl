@@ -18,7 +18,7 @@ julia> dist = ScaledInverseChiSq(10,3^2);
 julia> mean(dist)
 11.25
 julia> pdf(dist, 12)
-0.06055632954714239
+0.16055632954714239
 ```
 """
 ScaledInverseChiSq(ν,τ²) = InverseGamma(ν/2,ν*τ²/2)
