@@ -1,7 +1,7 @@
 module Utils
 
 # Python functions import
-using PyCall, LinearAlgebra, Distributions
+using PyCall, LinearAlgebra, Distributions, Statistics
 
 include("Distr.jl") # some extra distributions
 
@@ -95,9 +95,51 @@ end
 
 
 
+"""
+    Plotting a function of a 1D or 2D grid
+"""
+function plotFcnGrid(f, xGrid, xNames, fcnArgs...;ylabel="", title ="",
+        levels = 10, fill=:viridis)
+    griddedx = [typex<: StepRangeLen for typex in typeof.(xGrid)]
+    xGridReduced = [x for x in xGrid if typeof(x)<: StepRangeLen]
+    xFixed = [x for x in xGrid if typeof(x)<: Number]
+    xNamesGrid = xNames[griddedx]
+    xNamesFixed = xNames[griddedx.==false]
+    function fcnFrozen(xSubset, fcnArgs...)
+        x = zeros(length(xGrid))
+        x[griddedx.==false] = xFixed
+        x[griddedx.==true] = xSubset
+        return f(x, fcnArgs...)
+    end
+
+    if sum(griddedx.==true) == 1 # 1D
+        fValGrid = [fcnFrozen([x1], fcnArgs...) for x1 in xGridReduced[1]]
+        p = plot(xGridReduced[1], fValGrid, xlabel = xNamesGrid[1], ylabel = ylabel,
+            title = title)
+    elseif sum(griddedx.==true) == 2 # 2D
+        fValGrid = [fcnFrozen([x1, x2], fcnArgs...)
+            for x1 in xGridReduced[1], x2 in xGridReduced[2]]
+        p = contourf(xGridReduced[2], xGridReduced[1], fValGrid;
+            levels = levels, fill=fill, xlabel = xNamesGrid[2],
+            ylabel = xNamesGrid[1], title = title, cgrad = logscale)
+    elseif sum(griddedx.==true) == 3 # 3D FIXME: Not implemented yet
+        xGridTmp = xGrid
+        p = zeros(0)
+        for par in xGridReduced[3]
+            xGridTmp[findall(griddedx)[end]] = par # Fix the third input
+            subp = plotFcnGrid(f, xGridTmp, xNames, fcnArgs...;ylabel="", title ="",
+                    levels = 10, fill=:viridis);
+            append!(p, subp)
+        end
+        #l = @layout [a ; b c]
+        plot(p)
+    else error("Can only grid over one or two arguments. Please check xGrid")
+    end
+    return p
+end
 
 
 
-export unpickle, invvech, invvech_byrow
+export unpickle, invvech, invvech_byrow, plotFcnGrid
 
 end
