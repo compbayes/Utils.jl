@@ -1,6 +1,7 @@
 # Some distributions not available in Distributions.jl
 
 using Distributions: InverseGamma, LocationScale, TDist, pdf
+using Statistics
 
 """ 
     ScaledInverseChiSq(ν,τ²) 
