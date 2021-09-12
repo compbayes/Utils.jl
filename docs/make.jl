@@ -18,6 +18,7 @@ makedocs(
     ]
 )
 
-#deploydocs(
-#    repo  = "github.com/mattiasvillani/Utils.jl",
-#)
+deploydocs(
+    repo  = "github.com/mattiasvillani/Utils.jl",
+    branch = "gh-pages"
+)
