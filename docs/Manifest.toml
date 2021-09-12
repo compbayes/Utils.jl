@@ -348,9 +348,9 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
 [[Utils]]
 deps = ["ColorSchemes", "Distributions", "LinearAlgebra", "PyCall", "Statistics"]
-git-tree-sha1 = "5039637e81ebd737fb22bde1c9cec0fb1e28db30"
+git-tree-sha1 = "064ebf4b1cfba15b75b1e83448a3d9249551e554"
 repo-rev = "main"
-repo-url = "/home/mv/Dropbox/Julia/dev/Utils"
+repo-url = "git@github.com:mattiasvillani/Utils.jl.git"
 uuid = "a6a4a4df-ba9f-45e9-bafc-bec3296762b9"
 version = "0.1.0"
 
