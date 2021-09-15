@@ -1,9 +1,10 @@
 module Utils
 
 # Python functions import
-using PyCall, LinearAlgebra, Distributions, Statistics
+using PyCall, LinearAlgebra, Distributions, Statistics, PDMats, ForwardDiff
 
 include("Distr.jl") # some extra distributions
+include("Bayes.jl") # Bayesian inference utilities, e.g. posterior samplers.
 
 # Importing the pickle functionality from Python using PyCall
 py"""
@@ -93,6 +94,37 @@ function invvech_byrow(v, p; fillupper = true)
     return Cov
 end
 
+""" 
+    CovMatEquiCorr(σₓ, ρ, pBlock) 
+
+Set up a covariance matrix with equi-correlation within blocks of variables
+
+- σₓ is a p-vector with standard deviations 
+- ρ[i] is the correlation within block i 
+- pBlock[j] is the number of variables in block j
+
+# Examples
+```julia-repl
+julia> σₓ = [1,2,3]; ρ = [0.5,0.8]; pBlock = [1,2];
+julia> CovMatEquiCorr(σₓ, ρ, pBlock)
+3×3 Matrix{Float64}:
+ 1.0  0.0  0.0
+ 0.0  4.0  4.8
+ 0.0  4.8  9.0
+```
+""" 
+function CovMatEquiCorr(σₓ, ρ, pBlock)
+    p = sum(pBlock)
+    corrMat = zeros(p,p)
+    count = 0 
+    for i in 1:length(ρ)
+        idx = (1 + count):(count + pBlock[i])
+        corrMat[idx, idx] = ρ[i]*ones(pBlock[i], pBlock[i])
+        count = count + pBlock[i]
+    end
+    corrMat[diagind(corrMat)] .= 1
+    return diagm(σₓ)*corrMat*diagm(σₓ)
+end
 
 
 """
@@ -141,7 +173,57 @@ function plotFcnGrid(f, xGrid, xNames, fcnArgs...;ylabel="", title ="",
 end
 
 
+""" 
+    plotClassifier2D(y, X, predictFunc; gridSize = [100,100], colors = missing, axisLabels = missing) 
 
-export unpickle, invvech, invvech_byrow, plotFcnGrid
+Plots the decision boundaries of a classifier predictFunc() with two inputs
+
+- predictFunc should take x1, x2 as inputs and returns a class in unique(y)
+- class labels can be Categorical or Int
+
+""" 
+function plotClassifier2D(y, X, predictFunc; gridSize = [100,100], 
+        colors = missing, axisLabels = missing)
+    if ismissing(colors)
+        colors = Paired_12[[1,2,7,8,3,4,5,6,9,10,11,12]];
+    end
+    classes = unique(y)
+    if ismissing(labels)
+        axisLabels = names(X)
+    end
+    markerLarge = 3
+    markerSmall = 3
+    x1 = X[:,1]
+    x2 = X[:,2]
+    # Compute predictions over a grid in x1-x2 space
+    x1Grid = range(minimum(x1),maximum(x1), length = gridSize[1])
+    x2Grid = range(minimum(x2),maximum(x2), length = gridSize[2])
+    yPreds = Matrix{Union{Int, String}}(undef, length(x2Grid), length(x1Grid))
+    for (i,x1) in enumerate(x1Grid)
+        for (j,x2) in enumerate(x2Grid)
+            yPreds[j,i] = predictFunc([x1,x2])
+        end
+    end
+    x1Vec = (x1Grid' .* ones(length(x2Grid)))[:]
+    x2Vec = (ones(length(x1Grid))' .* x2Grid )[:]
+    yPredsVec = yPreds[:]
+
+    # Plot classifications as big points with light color
+    p = scatter(xlabel = axisLabels[1], ylabel = axisLabels[2])
+    for (i,c) in enumerate(classes)
+        scatter!(p, x1Vec[yPredsVec .== c], x2Vec[yPredsVec .== c], 
+            color = colors[2*i-1], markersize = markerLarge, label = "")
+    end
+
+    # Plot the labelled training data as dark small points
+    for (i,c) in enumerate(classes)
+        scatter!(p, x1[y .== c], x2[y .== c], color = colors[2*i], 
+            markersize = markerSmall, label = c)
+    end
+
+    return p
+end
+
+export unpickle, invvech, invvech_byrow, CovMatEquiCorr, plotFcnGrid, plotClassifier2D
 
 end

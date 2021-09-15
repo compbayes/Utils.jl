@@ -1,4 +1,4 @@
-using Utils, Distributions
+using Utils, Distributions, LinearAlgebra
 using Test
 
 include("UtilsTest.jl")

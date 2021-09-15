@@ -1,0 +1,4 @@
+# Bayesian tools
+```@docs
+finiteNewtonMH
+```
