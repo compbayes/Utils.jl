@@ -1,11 +1,12 @@
 module Utils
 
-# Exporting all useful packages
+# Exporting
 using Reexport
 @reexport using Plots, LinearAlgebra, Distributions, Statistics, DataFrames, RCall
 @reexport using LaTeXStrings
-
 using PyCall, PDMats
+import ColorSchemes: Paired_12
+colors = Paired_12[[1,2,7,8,3,4,5,6,9,10]]
 
 include("PlotSettings.jl") # Color schemes and default plot settings
 include("Distr.jl") # some extra distributions
@@ -297,7 +298,7 @@ function plotClassifier2D(y, X, predictFunc; gridSize = [100,100],
     return p
 end
 
-export unpickle, subscript, pad_digits, vec, invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr, plotFcnGrid, plotClassifier2D
+export unpickle, subscript, pad_digits, invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr, plotFcnGrid, plotClassifier2D
 export colors
 
 end

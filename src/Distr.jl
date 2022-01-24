@@ -1,8 +1,8 @@
 # Some distributions not available in Distributions.jl
 
 using Distributions: InverseGamma, LocationScale, TDist, pdf
-using ConjugatePriors: NormalInverseChisq
 using Statistics
+include("normalinvchisq.jl") # Taken from ConjugatePriors.jl (which downgrades too many packages)
 
 """ 
     ScaledInverseChiSq(ν,τ²) 
