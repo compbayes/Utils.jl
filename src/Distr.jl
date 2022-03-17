@@ -1,7 +1,9 @@
 # Some distributions not available in Distributions.jl
-
-using Distributions: InverseGamma, LocationScale, TDist, pdf
+using Distributions, SpecialFunctions
+using Distributions: InverseGamma, LocationScale, TDist
+import Distributions: pdf, cdf, quantile
 using Statistics
+import Base.rand
 include("normalinvchisq.jl") # Taken from ConjugatePriors.jl (which downgrades too many packages)
 
 """ 
@@ -43,7 +45,7 @@ julia> pdf(dist, 1)
 0.18980334491124723
 ```
 """ 
-TDist(μ, σ, ν) = LocationScale(μ, σ, TDist(ν))
+TDist(μ, σ, ν) = μ + TDist(ν)*σ
 
 
 
@@ -76,5 +78,44 @@ function SimDirProcess(P₀, α, ϵ)
     return θ[sortIdx], π[sortIdx]
 end
 
-export ScaledInverseChiSq, TDist, NormalInverseChisq, SimDirProcess
+
+""" 
+    ZDist(α, β) 
+
+Define the Z(α, β, 0, 1)-distribution. 
+
+This special case of the Z-distribution is the same as log(x/(1-x)) for x ∼ Beta(α, β)
+
+# Examples
+```julia-repl
+julia> zdist = ZDist(1/2, 1/2)
+julia> rand(zdist, 4)'
+1×4 adjoint(::Vector{Float64}) with eltype Float64:
+ 1.00851  0.640297  0.566234  2.16941
+```
+""" 
+struct ZDist <: ContinuousUnivariateDistribution
+    α::Float64
+    β::Float64
+end
+
+function rand(zdist::ZDist, n::Int = 1)
+    x = rand(Beta(zdist.α, zdist.β), n)
+    return log.(x./(1 .- x))
+end
+
+function pdf(zdist::ZDist, x::Real)
+    return (1/beta(zdist.α,zdist.β))*(exp(x)^zdist.α)/(1 + exp(x))^(zdist.α + zdist.β)
+end
+
+function cdf(zdist::ZDist, x::Real)
+    return quadgk(y -> pdf(zdist, y), -Inf, x, rtol=1e-8)[1]
+end
+
+function quantile(zdist::ZDist, p)
+    return find_zero(x -> cdf(zdist, x) - p, (-100, 100))
+end
+
+export ScaledInverseChiSq, TDist, NormalInverseChisq, SimDirProcess, ZDist
+#rand, cdf, pdf, quantile
 

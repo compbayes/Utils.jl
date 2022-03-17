@@ -4,7 +4,7 @@ module Utils
 using Reexport
 @reexport using Plots, LinearAlgebra, Distributions, Statistics, DataFrames, RCall
 @reexport using LaTeXStrings
-using PyCall, PDMats
+using PyCall, PDMats, QuadGK, Roots
 import ColorSchemes: Paired_12
 colors = Paired_12[[1,2,7,8,3,4,5,6,9,10]]
 
@@ -12,14 +12,9 @@ include("PlotSettings.jl") # Color schemes and default plot settings
 include("Distr.jl") # some extra distributions
 include("Bayes.jl") # Bayesian inference utilities, e.g. posterior samplers.
 
-# Importing the pickle functionality from Python using PyCall
+# Importing the pickle in Python using PyCall.jl #FIXME: This needs to be executed manually. What is going on?
 py"""
 import pickle
-def unpickle(filename):
-    with open(filename + '.pkl', 'rb') as f:
-        data = pickle.load(f)
-    return data
-
 """
 
 # Make julia function that pickles (reads a Python file with data)
@@ -29,8 +24,9 @@ def unpickle(filename):
 Read a Python data file using Python's Pickle via PyCall.jl.
 """
 function unpickle(filename)
-    return py"unpickle"(filename)
+    return py"pickle.load(open($filename + '.pkl', 'rb'))"
 end
+
 
 """ 
     subscript(i::Integer) 
