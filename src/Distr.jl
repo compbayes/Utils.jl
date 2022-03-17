@@ -109,13 +109,19 @@ function pdf(zdist::ZDist, x::Real)
 end
 
 function cdf(zdist::ZDist, x::Real)
-    return quadgk(y -> pdf(zdist, y), -Inf, x, rtol=1e-8)[1]
+    if zdist.α ≈ zdist.β ≈ 1/2 # Mixture approx of Z(1/2,1/2) for speed
+        cdf(MixtureModel([3.4236*TDist(10),1.8417*TDist(10)],[0.5414,1-0.5414]), x)
+    else
+        return quadgk(y -> pdf(zdist, y), -Inf, x, rtol=1e-8)[1]
+    end
 end
 
 function quantile(zdist::ZDist, p)
-    return find_zero(x -> cdf(zdist, x) - p, (-100, 100))
+    if zdist.α ≈ zdist.β ≈ 1/2 # Mixture approx of Z(1/2,1/2) for speed
+        quantile(MixtureModel([3.4236*TDist(10),1.8417*TDist(10)],[0.5414,1-0.5414]),p)
+    else
+        return find_zero(x -> cdf(zdist, x) - p, (-100, 100))
+    end
 end
 
 export ScaledInverseChiSq, TDist, NormalInverseChisq, SimDirProcess, ZDist
-#rand, cdf, pdf, quantile
-
