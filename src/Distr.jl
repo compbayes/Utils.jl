@@ -1,7 +1,7 @@
 # Some distributions not available in Distributions.jl
 using Distributions, SpecialFunctions
 using Distributions: InverseGamma, LocationScale, TDist
-import Distributions: pdf, cdf, quantile
+import Distributions: logpdf, pdf, cdf, quantile
 using Statistics
 import Base.rand
 include("normalinvchisq.jl") # Taken from ConjugatePriors.jl (which downgrades too many packages)
@@ -108,6 +108,10 @@ function pdf(zdist::ZDist, x::Real)
     return (1/beta(zdist.α,zdist.β))*(exp(x)^zdist.α)/(1 + exp(x))^(zdist.α + zdist.β)
 end
 
+function logpdf(zdist::ZDist, x::Real)
+    return -logbeta(zdist.α,zdist.β) + zdist.α*x - (zdist.α + zdist.β)*log(1 + exp(x))
+end
+
 function cdf(zdist::ZDist, x::Real)
     if zdist.α ≈ zdist.β ≈ 1/2 # Mixture approx of Z(1/2,1/2) for speed
         cdf(MixtureModel([3.4236*TDist(10),1.8417*TDist(10)],[0.5414,1-0.5414]), x)
@@ -124,4 +128,98 @@ function quantile(zdist::ZDist, p)
     end
 end
 
-export ScaledInverseChiSq, TDist, NormalInverseChisq, SimDirProcess, ZDist
+""" 
+    GaussianCopula(CorrMat, f)
+
+Construct a Gaussian Copula with correlation matrix `CorrMat` and marginal distributions given by the elements in the vector of distributions in `f`. 
+
+If `f` is a singleton, then this distribution is used for all margins.
+
+# Examples
+```doctests 
+julia> using PDMats
+julia> f = [Normal(2, 3), Normal()]
+julia> CorrMat = PDMat([1 -0.8; -0.8 1])
+julia> GC = GaussianCopula(CorrMat, f)
+```
+""" 
+mutable struct GaussianCopula <: ContinuousMultivariateDistribution
+    CorrMat::PDMat
+    f::Vector{UnivariateDistribution}
+end
+
+GaussianCopula(CorrMat::PDMat, f::UnivariateDistribution) = GaussianCopula(CorrMat, 
+    [f for _ in 1:size(CorrMat,1)])
+GaussianCopula(f::Vector{UnivariateDistribution}) = GaussianCopula(1.0*I(length(f)), f)
+
+
+""" 
+    pdf(d:GaussianCopula, x)
+
+Compute probability density at `x` for the Gaussian copula with correlation matrix `CorrMat` and marginal distributions in `f` (vector of Distributions).
+
+# Examples
+The density of the Gaussian copula with Gaussian margins is:
+```doctests 
+julia> f = [Normal(2, 3), Normal()]
+julia> CorrMat = PDMat([1 -0.8; -0.8 1])
+julia> GC = GaussianCopula(CorrMat, f)
+julia> pdf(GC, [1,-1])
+0.009008250957272087
+```
+""" 
+function pdf(d::GaussianCopula, x::AbstractVector{<:Real})
+    u = cdf.(d.f, x)
+    q = quantile.(Normal(), u)
+    L = cholesky(d.CorrMat).L
+    invL = inv(L)
+    CorrMatInv = invL'invL  
+    return exp(-logdet(L) + 0.5*q'*(I(length(q)) - CorrMatInv)*q + sum(logpdf.(d.f, x)))
+end
+
+
+""" 
+    logpdf(d:GaussianCopula, x)
+
+Compute the log probability density at x for the Gaussian copula with correlation matrix CorrMat and marginal distributions in f (vector of Distributions).
+
+See also [`pdf(d:GaussianCopula, x)`](@ref).
+""" 
+function logpdf(d::GaussianCopula, x::AbstractVector{<:Real})
+    u = cdf.(d.f, x)
+    q = quantile.(Normal(), u)
+    L = cholesky(d.CorrMat).L
+    invL = inv(L)
+    CorrMatInv = invL'invL  
+    return -logdet(L) + 0.5*q'*(I(length(q)) - CorrMatInv)*q + sum(logpdf.(d.f, x))
+end
+
+function rand(d::GaussianCopula)
+    p = size(d.CorrMat,1)
+    if !isdiag(d.CorrMat)
+        u = cdf.(Normal(), rand(MvNormal(d.CorrMat)))
+        x = quantile.(d.f, u)
+    else
+        x = rand.(d.f, p)
+    end   
+    return x
+end
+
+""" 
+    rand(d:GaussianCopula, n::Int)
+
+Simulate from a Gaussian copula with correlation matrix `CorrMat` and marginal distributions in `f` (vector of Distributions).
+
+See also [`pdf(d:GaussianCopula, x)`](@ref).
+"""
+function rand(d::GaussianCopula, n::Int)
+    p = size(d.CorrMat,1)
+    X = zeros(p,n)
+    for i in 1:n
+        X[:,i] = rand(d::GaussianCopula)
+    end
+    return X
+end
+
+export ScaledInverseChiSq, TDist, NormalInverseChisq, SimDirProcess
+export ZDist, GaussianCopula
