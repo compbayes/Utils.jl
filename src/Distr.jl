@@ -89,7 +89,7 @@ Define the Z(α, β, 0, 1)-distribution.
 
 This standardized case of the Z-distribution is the same as log(x/(1-x)) for x ∼ Beta(α, β).
 The general Z(α, β, μ, σ) is obtained by the Distributions.jl location-scale construction:
-μ + σ*Z(α, β, 0, 1)
+μ + σ*Z(α, β)
 
 # Examples
 ```julia-repl
@@ -104,9 +104,11 @@ julia> pdf(zdist_general, 1)zdist = ZDist(3/2,3/2)
 ```
 """ 
 struct ZDist <: ContinuousUnivariateDistribution
-    α::Float64
-    β::Float64
+    α::Real
+    β::Real
 end
+
+ZDist(α::Real, β::Real, μ::Real, σ::Real) = μ + σ*ZDist(α, β)
 
 function rand(zdist::ZDist, n::Int = 1)
     x = rand(Beta(zdist.α, zdist.β), n)
@@ -142,6 +144,10 @@ end
 
 function std(zdist::ZDist)
     return sqrt(trigamma(zdist.α) + trigamma(zdist.β))
+end
+
+function params(zdist::ZDist)
+    return zdist.α, zdist.β
 end
 
 """ 
