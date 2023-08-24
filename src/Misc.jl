@@ -40,3 +40,38 @@ function pad_digits(x)
     end
     return strs
 end
+
+""" 
+    find_min_matrix(matrix, k) 
+
+Returns the Cartesian indices of the k:th smallest values in `matrix`. 
+
+# Examples
+```julia-repl
+julia> A = [10 8 12; 5 4 9; 3 6 2]
+julia> find_min_matrix(A, 3)
+```
+""" 
+function find_min_matrix(matrix, k)
+    flattened_matrix = vec(matrix)
+    sorted_indices = sortperm(flattened_matrix)
+    return CartesianIndices(size(matrix))[sorted_indices[1:k]]
+end
+
+
+""" 
+    find_max_matrix(matrix, k) 
+
+Returns the Cartesian indices of the k:th largest values in `matrix`. 
+
+# Examples
+```julia-repl
+julia> A = [10 8 12; 5 4 9; 3 6 2]
+julia> find_max_matrix(A, 3)
+```
+""" 
+function find_max_matrix(matrix, k)
+    flattened_matrix = vec(matrix)
+    sorted_indices = sortperm(flattened_matrix, rev=true)
+    return CartesianIndices(size(matrix))[sorted_indices[1:k]]
+end

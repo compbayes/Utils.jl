@@ -18,9 +18,10 @@ include("Bayes.jl") # Bayesian inference utilities, e.g. posterior samplers.
 export finiteNewtonMH
 
 include("DataWrangling.jl") # Data wrangling utilities
-export unpickle
+export unpickle # use the pickle.jl package instead of rolling own
 
 include("Misc.jl") # Miscellaneous utilities
+export find_min_matrix, find_max_matrix
 
 include("LinAlgMisc.jl")   
 export invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr

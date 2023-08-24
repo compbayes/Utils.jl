@@ -20,4 +20,9 @@
     @test ρComputed[4,5] ≈ ρ[2]
     @test σComputed[1] ≈ σₓ[1]
 
+    # Misc.jl
+    A = [1 2 3; 4 5 6; 7 8 9]
+    @test find_min_matrix(A, 3)[3] == CartesianIndex(1, 3)
+    @test find_max_matrix(A, 3)[1] == CartesianIndex(3, 3)
+
 end

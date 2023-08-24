@@ -27,15 +27,15 @@ function finiteNewtonMH(θₛ::Vector, ℓπ, ∇, H, nNewton, df, πargs...)
     end
 
     # Proposal draw from multivariate t
-    Σ = PDMat(Symmetric(-inv(H(μ,πargs...)))) # Cov at terminal point
+    Σ = PDMat(Symmetric(-inv(H(μ, πargs...)))) # Cov at terminal point
     θₚ = rand(MvTDist(df, μ, Σ))
     ℓqₚ = logpdf(MvTDist(df, μ, Σ), θₚ) # This is log q(θₚ|θₛ)
-    ℓπₚ = ℓπ(θₚ,πargs...)
+    ℓπₚ = ℓπ(θₚ, πargs...)
 
     # Now take nNewton Newton steps, this time starting from θₚ
     μ = θₚ
     for i in 1:nNewton
-        μ = μ - H(μ,πargs...)\∇(μ,πargs...)
+        μ = μ - H(μ, πargs...)\∇(μ, πargs...)
     end
     Σ = PDMat(Symmetric(-inv(H(μ,πargs...))))
     ℓqₛ = logpdf(MvTDist(df, μ, Σ), θₛ) # This is log q(θₛ|θₚ)
@@ -71,7 +71,7 @@ function finiteNewtonMH(θₛ::Real, ℓπ, ∇, H, nNewton, df, πargs...)
     # Iterate nNewton steps from starting (current) θₛ
     μ = θₛ
     for i in 1:nNewton
-        μ = μ - H(μ,πargs...)\∇(μ,πargs...)
+        μ = μ - H(μ, πargs...)\∇(μ, πargs...)
     end
 
     # Proposal draw from multivariate t
