@@ -3,6 +3,7 @@ using Distributions: InverseGamma, LocationScale, TDist
 import Distributions: logpdf, pdf, cdf, quantile, std, mean
 using Statistics
 import Base.rand
+import Base.length
 include("normalinvchisq.jl") # Taken from ConjugatePriors.jl (which downgrades too many packages)
 
 """ 
@@ -128,7 +129,7 @@ function logpdf(zdist::ZDist, x::Real)
                                                             # log1pexp(x) = log(1 + exp(x))
 end
 
-autodiff = true
+autodiff = false
 if autodiff == false
 
     function cdf(zdist::ZDist, x::Real)
