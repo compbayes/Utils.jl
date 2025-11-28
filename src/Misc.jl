@@ -105,4 +105,5 @@ function ConstructOptimalSubplot(NumberOfPlots)
 
 end
 
-quantileMultiDim(A, p; dims, kwargs...) = mapslices(x -> quantile(x, p; kwargs...), A; dims)
+quantile_multidim(A, p; dims, kwargs...) = mapslices(x -> quantile(x, p; kwargs...), 
+    A; dims)

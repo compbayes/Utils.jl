@@ -1,5 +1,5 @@
 using Distributions, SpecialFunctions, LogExpFunctions, Random 
-using Distributions: InverseGamma, LocationScale, TDist
+import Distributions: InverseGamma, LocationScale, TDist
 import Distributions: logpdf, pdf, cdf, quantile, std, mean
 using Statistics
 import Base.rand

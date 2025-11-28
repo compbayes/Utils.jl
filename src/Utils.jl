@@ -18,7 +18,7 @@ include("Bayes.jl") # Bayesian inference utilities, e.g. posterior samplers.
 export finiteNewtonMH, HPDregions
 
 include("Misc.jl") # Miscellaneous utilities
-export quantileMultiDim, find_min_matrix, find_max_matrix, ConstructOptimalSubplot
+export quantile_multidim, find_min_matrix, find_max_matrix, ConstructOptimalSubplot
 
 include("LinAlgMisc.jl")   
 export invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr
