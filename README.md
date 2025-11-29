@@ -1,9 +1,7 @@
 # Utils
 
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://mattiasvillani.github.io/Utils.jl/dev/)
+[![Build Status](https://github.com/mattiasvillani/Utils.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/mattiasvillani/Utils.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/mattiasvillani/Utils.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/mattiasvillani/Utils.jl)
 
-[![][docs-stable-img]][docs-stable-url] [![build](https://github.com/mattiasvillani/Utils.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/mattiasvillani/Utils.jl/actions?query=workflow%3ACI) 
-
-[docs-stable-img]: https://img.shields.io/badge/docs-blue.svg
-[docs-stable-url]: file:///home/mv/Dropbox/Julia/dev/Utils/docs/build/index.html
-
-General Julia utility functions to be used across any Julia project.
+Simple Julia utility functions used across packages.

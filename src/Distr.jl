@@ -181,10 +181,9 @@ end
 
 Polya-gamma distribution with one parameter and nterms in the tructation of the pdf. 
 
-If `y` is unspecified, compute the Bar index between all pairs of columns of `x`. 
-
 # Examples
 ```julia-repl
+julia> using Distributions: pdf;
 julia> d = PGDistOneParam(1, 10)
 julia> pdf(d, 1.1)
 ```
