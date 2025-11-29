@@ -1,7 +1,7 @@
 module Utils
 
 # Exporting
-using Plots, LinearAlgebra, Distributions, Statistics, DataFrames, RCall
+using Plots, LinearAlgebra, Distributions, Statistics, DataFrames
 using LaTeXStrings, KernelDensity
 using PDMats
 
@@ -14,8 +14,8 @@ export GaussianCopula
 export PGDistOneParam
 export SimDirProcess
 
-include("Bayes.jl") # Bayesian inference utilities, e.g. posterior samplers.
-export finiteNewtonMH, HPDregions
+include("Bayes.jl") # Bayesian inference utilities
+export HPDregions
 
 include("Misc.jl") # Miscellaneous utilities
 export quantile_multidim, find_min_matrix, find_max_matrix, ConstructOptimalSubplot
