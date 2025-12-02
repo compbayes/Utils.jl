@@ -18,7 +18,7 @@ include("Bayes.jl") # Bayesian inference utilities
 export HPDregions
 
 include("Misc.jl") # Miscellaneous utilities
-export quantile_multidim, find_min_matrix, find_max_matrix, ConstructOptimalSubplot
+export quantile_multidim, find_min_matrix, find_max_matrix, optimalPlotLayout
 
 include("LinAlgMisc.jl")   
 export invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr
