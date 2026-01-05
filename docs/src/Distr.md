@@ -4,6 +4,6 @@ TDist
 GaussianCopula
 PGDistOneParam
 NormalInverseChisq
-ScaledInverseChiSq 
+ScaledInverseChiSq
 SimDirProcess
 ```

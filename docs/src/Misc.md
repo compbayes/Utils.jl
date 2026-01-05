@@ -3,7 +3,7 @@
 quantile_multidim
 find_min_matrix
 find_max_matrix
-ConstructOptimalSubplot
+optimalPlotLayout   
 plot_braces!
 ```
 
