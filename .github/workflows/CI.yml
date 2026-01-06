@@ -46,6 +46,7 @@ jobs:
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          slug: compbayes/DynamicGlobalLocalShrinkage.jl
   docs:
     name: Documentation
     runs-on: ubuntu-latest
