@@ -104,7 +104,7 @@ end
 
 GaussianCopula(CorrMat::PDMat, f::UnivariateDistribution) = GaussianCopula(CorrMat, 
     [f for _ in 1:size(CorrMat,1)])
-GaussianCopula(f::Vector{UnivariateDistribution}) = GaussianCopula(1.0*I(length(f)), f)
+GaussianCopula(f::Vector{UnivariateDistribution}) = GaussianCopula(PDMat(Matrix(1.0*I(length(f)))), f)
 
 length(d::GaussianCopula) = size(d.CorrMat)[1]
 
