@@ -2,6 +2,7 @@ using Pkg
 
 # Activate the docs environment in docs/Project.toml
 Pkg.activate(@__DIR__)
+Pkg.develop(PackageSpec(path=pwd()))
 Pkg.instantiate()  # optional but good to keep
 
 @show Base.active_project()  # temporary debug, can be removed later
