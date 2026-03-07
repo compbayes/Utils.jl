@@ -4,4 +4,10 @@
 [![Build Status](https://github.com/compbayes/Utils.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/compbayes/Utils.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/compbayes/Utils.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/compbayes/Utils.jl)
 
-Simple Julia utility functions used across packages.
+Simple Julia utility functions used across packages in CompBayes organization. 
+
+To use the package, first add the CompBayesRegistry: In Julia package mode, press ] and run:
+`registry add https://github.com/compbayes/CompBayesRegistry.git`
+
+Then add the package, again in Julia package mode:
+`add Utils`
