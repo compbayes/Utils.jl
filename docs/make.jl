@@ -16,7 +16,7 @@ makedocs(
     authors="Mattias Villani",
     sitename = "Utils.jl",
     format=Documenter.HTML(;
-        canonical="https://mattiasvillani.github.io/Utils.jl",
+        canonical="https://github.com/compbayes/Utils.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -30,6 +30,6 @@ makedocs(
 )
 
 deploydocs(
-   repo  = "github.com/mattiasvillani/Utils.jl",
+   repo  = "github.com/compbayes/Utils.jl",
    devbranch = "main"
 )
