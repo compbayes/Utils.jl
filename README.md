@@ -7,7 +7,9 @@
 Simple Julia utility functions used across packages in CompBayes organization. 
 
 To use the package, first add the CompBayesRegistry: In Julia package mode, press ] and run:
-`registry add https://github.com/compbayes/CompBayesRegistry.git`
+
+```registry add https://github.com/compbayes/CompBayesRegistry.git```
 
 Then add the package, again in Julia package mode:
-`add Utils`
+
+```add Utils``` 
