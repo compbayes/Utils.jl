@@ -206,3 +206,23 @@ function logpdf(d::PGDistOneParam, x::Real)
     return log(pdf(d, x))
 end
 
+""" 
+    bar(x[, y]) 
+
+Compute the Bar index between `x` and `y`. 
+
+μ is the mean and ϕ is the dispersion parameter so that
+E(y) = μ
+Var(y) = μ(1 + μ/ϕ)
+ 
+# Examples
+```julia-repl
+julia> μ = 0.3; ϕ = 2.3;
+julia> d = NegativeBinomial2(μ, ϕ);
+julia> mean(d), μ # should be equal, up to numerical precision
+0.2999999999999997
+julia> var(d), μ*(1 + μ/ϕ) # should be equal, up to numerical precision
+0.33913043478260835
+```
+""" 
+NegativeBinomial2(μ, ϕ) = NegativeBinomial(ϕ, ϕ/(ϕ + μ))

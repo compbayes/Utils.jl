@@ -13,6 +13,7 @@ export ScaledInverseChiSq, TDist, NormalInverseChisq
 export GaussianCopula
 export PGDistOneParam
 export SimDirProcess
+export NegativeBinomial2
 
 include("Bayes.jl") # Bayesian inference utilities
 export HPDregions

@@ -118,4 +118,9 @@
     @test_throws ArgumentError NormalInverseChisq(0.0, 1.0, -1.0, 1.0)  # κ < 0
     @test_throws ArgumentError NormalInverseChisq(0.0, 1.0, 1.0, -1.0)  # ν < 0
 
+    # NegativeBinomial2
+    μ = 0.5; ϕ = 2.3;
+    d = NegativeBinomial2(μ, ϕ)
+    @test mean(d) ≈ μ
+    @test var(d) ≈ μ*(1 + μ/ϕ)
 end
