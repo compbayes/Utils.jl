@@ -207,9 +207,9 @@ function logpdf(d::PGDistOneParam, x::Real)
 end
 
 """ 
-    bar(x[, y]) 
+    NegativeBinomial2(μ, ϕ) 
 
-Compute the Bar index between `x` and `y`. 
+The negative binomial distribution in the mean (μ) and dispersion (ϕ) parameterization 
 
 μ is the mean and ϕ is the dispersion parameter so that
 E(y) = μ

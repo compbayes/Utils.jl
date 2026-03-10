@@ -6,4 +6,5 @@ PGDistOneParam
 NormalInverseChisq
 ScaledInverseChiSq
 SimDirProcess
+NegativeBinomial2
 ```
