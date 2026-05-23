@@ -18,13 +18,17 @@ export NegativeBinomial2
 include("Bayes.jl") # Bayesian inference utilities
 export HPDregions
 
+include("Samplers.jl") # Slice samplers and other MCMC samplers
+export slice_sample_bounded
+
 include("Misc.jl") # Miscellaneous utilities
 export quantile_multidim, find_min_matrix, find_max_matrix, optimalPlotLayout
+export memorysize
 
-include("LinAlgMisc.jl")   
+include("LinAlgMisc.jl")
 export invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr
 
-include("PlotUtils.jl") 
+include("PlotUtils.jl")
 export plotFcnGrid, plotClassifier2D, plot_braces!
 
-end 
+end

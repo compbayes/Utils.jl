@@ -77,4 +77,7 @@
     @test size(q) == (1, 4)
     @test q[1,1] ≈ 2.0   # median of [1,2,3]
 
+    C = randn(100,2000)
+    @test memorysize(C, "b", false) == round(Base.summarysize(C), digits = 3)
+
 end

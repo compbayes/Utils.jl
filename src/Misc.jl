@@ -115,3 +115,40 @@ Compute quantiles along specified dimensions of multidimensional array `A`.
 """ 
 quantile_multidim(A, p; dims, kwargs...) = mapslices(x -> quantile(x, p; kwargs...), 
     A; dims)
+
+""" 
+    memorysize(obj, unit = "mb", print = true)
+
+Compute the memory size of `obj` in the specified unit (B, KB, MB, or GB). If `print` is true, print the memory size; otherwise, return it as a number. Wrapper around `Base.summarysize` that converts the size to the specified unit and optionally prints it.
+
+# Examples
+```julia-repl
+julia> A = rand(1000, 1000);
+julia> memorysize(A)
+Memory size of object: 7.629 MiB
+julia> memorysize(A, "gb")
+Memory size of object: 0.007 GiB
+```
+""" 
+function memorysize(obj, unit = "mb", print = true)
+    if lowercase(unit) == "b" || unit == "bytes"
+        size = Base.summarysize(obj)
+        unit = "bytes"
+    elseif lowercase(unit) == "kb" || unit == "kib"
+        size = Base.summarysize(obj) / 1024
+        unit = "KiB"
+    elseif lowercase(unit) == "mb" || unit == "mib"
+        size = Base.summarysize(obj) / 1024^2
+        unit = "MiB"
+    elseif lowercase(unit) == "gb" || unit == "gib"
+        size = Base.summarysize(obj) / 1024^3
+        unit = "GiB"
+    else
+        error("Unit must be one of 'B', 'bytes, 'KB', 'MB', or 'GB'")
+    end
+    if print
+        println("Memory size of object: ", round(size, digits=3), " ", unit)
+        return nothing
+    end
+    return size
+end 
