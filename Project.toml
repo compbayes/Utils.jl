@@ -1,6 +1,6 @@
 name = "Utils"
 uuid = "a6a4a4df-ba9f-45e9-bafc-bec3296762b9"
-version = "1.0.1"
+version = "1.1.0"
 authors = ["Mattias Villani"]
 
 [deps]
