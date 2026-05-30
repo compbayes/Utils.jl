@@ -23,7 +23,7 @@ export slice_sample_bounded
 
 include("Misc.jl") # Miscellaneous utilities
 export quantile_multidim, find_min_matrix, find_max_matrix, optimalPlotLayout
-export memorysize
+export memorysize, get_slurm_id
 
 include("LinAlgMisc.jl")
 export invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr

@@ -10,8 +10,8 @@ From https://stackoverflow.com/questions/46671965/printing-variable-subscripts-i
 julia> println("Studio"*subscript(45))
 Studio₄₅
 ```
-""" 
-subscript(i::Integer) = i<0 ? error("$i is negative") : join('₀'+d for d in reverse(digits(i)))
+"""
+subscript(i::Integer) = i < 0 ? error("$i is negative") : join('₀' + d for d in reverse(digits(i)))
 
 
 """ 
@@ -29,14 +29,14 @@ julia> pad_digits([1.21, 13.3, 123.456])
  "13.300"
  "123.456"
 ```
-""" 
+"""
 function pad_digits(x)
     strs = string.(x)
-    digits = [length(str[(findfirst.('.', str) + 1):end]) for str in strs]
+    digits = [length(str[(findfirst.('.', str)+1):end]) for str in strs]
     maxDigits = maximum(digits)
     lengthNumber = [length(str) for str in strs]
     for i = 1:length(strs)
-        strs[i] = strs[i]*repeat("0",maxDigits-digits[i])
+        strs[i] = strs[i] * repeat("0", maxDigits - digits[i])
     end
     return strs
 end
@@ -51,7 +51,7 @@ Returns the Cartesian indices of the k:th smallest values in `matrix`.
 julia> A = [10 8 12; 5 4 9; 3 6 2]
 julia> find_min_matrix(A, 3)
 ```
-""" 
+"""
 function find_min_matrix(matrix, k)
     flattened_matrix = vec(matrix)
     sorted_indices = sortperm(flattened_matrix)
@@ -69,7 +69,7 @@ Returns the Cartesian indices of the k:th largest values in `matrix`.
 julia> A = [10 8 12; 5 4 9; 3 6 2]
 julia> find_max_matrix(A, 3)
 ```
-""" 
+"""
 function find_max_matrix(matrix, k)
     flattened_matrix = vec(matrix)
     sorted_indices = sortperm(flattened_matrix, rev=true)
@@ -80,30 +80,62 @@ end
     optimalPlotLayout(NumberOfPlots) 
 
 Silly function that returns the 'optimal' number of rows and columns for a subplot given the number of plots.
-""" 
+"""
 function optimalPlotLayout(NumberOfPlots)
 
     # Given a number of plots, this function determines the 'optimal' number of
     # rows and columns of the subplot.
 
     #TODO: also output the optimal size of the figure
-    
-    if NumberOfPlots == 1 return 1, 1 end
-    if NumberOfPlots == 2 return 1, 2 end
-    if NumberOfPlots == 3 return 2, 2 end
-    if NumberOfPlots == 4 return 2, 2 end
-    if NumberOfPlots == 5 return 2, 3 end
-    if NumberOfPlots == 6 return 2, 3 end
-    if NumberOfPlots == 7 return 3, 3 end
-    if NumberOfPlots == 8 return 3, 3 end
-    if NumberOfPlots == 9 return 3, 3 end
-    if NumberOfPlots == 10 return 3, 4 end
-    if NumberOfPlots == 11 return 3, 4 end
-    if NumberOfPlots == 12 return 3, 4 end
-    if NumberOfPlots == 13 return 4, 4 end
-    if NumberOfPlots == 14 return 4, 4 end
-    if NumberOfPlots == 15 return 4, 4 end
-    if NumberOfPlots == 16 return 4, 4 end
+
+    if NumberOfPlots == 1
+        return 1, 1
+    end
+    if NumberOfPlots == 2
+        return 1, 2
+    end
+    if NumberOfPlots == 3
+        return 2, 2
+    end
+    if NumberOfPlots == 4
+        return 2, 2
+    end
+    if NumberOfPlots == 5
+        return 2, 3
+    end
+    if NumberOfPlots == 6
+        return 2, 3
+    end
+    if NumberOfPlots == 7
+        return 3, 3
+    end
+    if NumberOfPlots == 8
+        return 3, 3
+    end
+    if NumberOfPlots == 9
+        return 3, 3
+    end
+    if NumberOfPlots == 10
+        return 3, 4
+    end
+    if NumberOfPlots == 11
+        return 3, 4
+    end
+    if NumberOfPlots == 12
+        return 3, 4
+    end
+    if NumberOfPlots == 13
+        return 4, 4
+    end
+    if NumberOfPlots == 14
+        return 4, 4
+    end
+    if NumberOfPlots == 15
+        return 4, 4
+    end
+    if NumberOfPlots == 16
+        return 4, 4
+    end
     return ceil(sqrt(NumberOfPlots)), ceil(sqrt(NumberOfPlots))
 
 end
@@ -112,8 +144,8 @@ end
     quantile_multidim(A, p; dims, kwargs...)
 
 Compute quantiles along specified dimensions of multidimensional array `A`.
-""" 
-quantile_multidim(A, p; dims, kwargs...) = mapslices(x -> quantile(x, p; kwargs...), 
+"""
+quantile_multidim(A, p; dims, kwargs...) = mapslices(x -> quantile(x, p; kwargs...),
     A; dims)
 
 """ 
@@ -129,8 +161,8 @@ Memory size of object: 7.629 MiB
 julia> memorysize(A, "gb")
 Memory size of object: 0.007 GiB
 ```
-""" 
-function memorysize(obj, unit = "mb", print = true)
+"""
+function memorysize(obj, unit="mb", print=true)
     if lowercase(unit) == "b" || unit == "bytes"
         size = Base.summarysize(obj)
         unit = "bytes"
@@ -151,4 +183,20 @@ function memorysize(obj, unit = "mb", print = true)
         return nothing
     end
     return size
-end 
+end
+
+""" 
+    get_slurm_id(print=true)
+Get the SLURM_ARRAY_TASK_ID from the environment variable if it exists, otherwise get it from ARGS for local testing. If `print` is true, print the SLURM ID; otherwise, just return it as a number.
+"""
+function get_slurm_id(print=true)
+    if haskey(ENV, "SLURM_ARRAY_TASK_ID")
+        slurm_id = parse(Int, ENV["SLURM_ARRAY_TASK_ID"])
+    else
+        slurm_id = isempty(ARGS) ? 0 : parse(Int, ARGS[1])
+    end
+    if print
+        println("slurm_id = $slurm_id")
+    end
+    return slurm_id
+end
