@@ -13,24 +13,25 @@ using Utils, Distributions, Statistics
 DocMeta.setdocmeta!(Utils, :DocTestSetup, :(using Utils); recursive=true)
 
 makedocs(
-    modules = [Utils],
+    modules=[Utils],
     authors="Mattias Villani",
-    sitename = "Utils.jl",
+    sitename="Utils.jl",
     format=Documenter.HTML(;
         canonical="https://github.com/compbayes/Utils.jl",
         edit_link="main",
         assets=String[],
     ),
-    checkdocs = :exports,  # or :none if you want no check
-    pages = Any[
-        "Home" => "index.md",
-        "Distributions" => "Distr.md",
-        "Linear algebra" => "LinAlgMisc.md",
-        "Misc" => "Misc.md"    
+    checkdocs=:exports,  # or :none if you want no check
+    pages=Any[
+        "Home"=>"index.md",
+        "Distributions"=>"Distr.md",
+        "Linear algebra"=>"LinAlgMisc.md",
+        "Misc"=>"Misc.md",
+        "Prediction scores"=>"PredScores.md",
     ]
 )
 
 deploydocs(
-   repo  = "github.com/compbayes/Utils.jl",
-   devbranch = "main"
+    repo="github.com/compbayes/Utils.jl",
+    devbranch="main"
 )

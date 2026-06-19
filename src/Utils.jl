@@ -2,7 +2,7 @@ module Utils
 
 # Exporting
 using Plots, LinearAlgebra, Distributions, Statistics, DataFrames
-using LaTeXStrings, KernelDensity
+using LaTeXStrings, KernelDensity, Distances
 using PDMats
 
 include("PlotSettings.jl") # Color schemes and default plot settings
@@ -30,5 +30,8 @@ export invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr
 
 include("PlotUtils.jl")
 export plotFcnGrid, plotClassifier2D, plot_braces!
+
+include("PredictionScores.jl")
+export crps, energy_score, variogram_score, dawid_sebastiani_score
 
 end
