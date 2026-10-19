@@ -8,3 +8,5 @@ include("UtilsTest.jl")
 include("DistrTest.jl")
 include("BayesTest.jl")
 include("PlotUtilsTest.jl")
+include("OptimizeTest.jl")
+
