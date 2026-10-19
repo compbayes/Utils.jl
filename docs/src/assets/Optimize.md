@@ -1,0 +1,4 @@
+# Optimization
+```@docs
+NewtonRaphson
+```

@@ -27,6 +27,7 @@ makedocs(
         "Distributions"=>"Distr.md",
         "Linear algebra"=>"LinAlgMisc.md",
         "Misc"=>"Misc.md",
+        "Optimization"=>"Optimize.md",
         "Prediction scores"=>"PredScores.md",
     ]
 )

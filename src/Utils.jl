@@ -25,6 +25,9 @@ include("Misc.jl") # Miscellaneous utilities
 export quantile_multidim, find_min_matrix, find_max_matrix, optimalPlotLayout
 export memorysize, get_slurm_id
 
+include("Optimize.jl")
+export NewtonRaphson
+
 include("LinAlgMisc.jl")
 export invvech, invvech_byrow, CovMatEquiCorr, Cov2Corr
 
